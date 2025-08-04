@@ -1,0 +1,92 @@
+﻿@page "/edit-form-demo"
+@using System.ComponentModel.DataAnnotations
+@rendermode InteractiveWebAssembly
+
+
+<h3>EditFormDemo</h3>
+
+<EditForm Model=@User OnSubmit=@FormSubmitted FormName="Register">
+    <DataAnnotationsValidator/>
+
+    <div>
+        <label for="name">Namn:</label>
+        <InputText @bind-Value="User.Name" id="name"></InputText>
+    </div>
+
+    <div>
+        <label for="email">E-post</label>
+        <InputText @bind-Value="User.Email" id="email" />
+        <ValidationMessage For="@(() => User.Email)" />
+    </div>
+    <div>
+        <label for="age">Age:</label>
+        <InputNumber @bind-Value="User.Age" id="age"></InputNumber>
+        <ValidationMessage For="@(() => User.Age)" />
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <InputText @bind-Value="User.Password" id="password" type="password"></InputText>
+    </div>
+    <div>
+        <label for="confirmPassword">Confirm Password</label>
+        <InputText @bind-Value="User.ConfirmPassword" id="confirmPassword" type="password"></InputText>
+    </div>
+
+    <button type="submit">Skicka</button>
+
+    <ValidationSummary></ValidationSummary>
+
+</EditForm>
+
+
+
+
+
+@code {
+
+    private void FormSubmitted(EditContext editContext)
+    {
+        bool formIsValidated = editContext.Validate();
+        if(formIsValidated)
+        {
+            var newUser = (Usermodel)editContext.Model;
+            // Post to api
+        }
+    }
+
+
+
+
+
+    private Usermodel User = new();
+    public class Usermodel : IValidatableObject
+    {
+        [Required(ErrorMessage="Namn är obligatoriskt")]
+        public string Name { get; set; }
+
+        [EmailAddress(ErrorMessage = "Epostadressen är ogiltig")]
+        public string Email { get; set; }
+
+        [Range(15, 99, ErrorMessage = "Åldern är felaktig")]
+        public int Age { get; set; }
+
+        [Required(ErrorMessage = "Vänligen ange ett lösenord")]
+        [MinLength(3, ErrorMessage = "Lösenordet måste vara minst 3 tecken.")]
+        public string Password { get; set; }
+
+        [Compare("Password", ErrorMessage = "Lösenorden matchar inte")]
+        public string ConfirmPassword { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if(Email?.EndsWith(".dk") == true)
+            {
+                yield return new ValidationResult("Epost från Danmark är inte tillåtet", new[] { nameof(Email) });
+            }
+            if(Name.Any(char.IsDigit))
+            {
+                yield return new ValidationResult("Inga siffror i namnet är okej", new[] { nameof(Name) });
+            }
+        }
+    }
+}
