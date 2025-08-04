@@ -1,0 +1,21 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<Hello/>
+<Hello Message="Speciellt meddelande"/>
+<Hello Message="Blazor rocks" />
+<Hello Message="@message"></Hello>
+<Hello>Hejsan svejsan</Hello>
+
+<HeadContent>
+    <meta name="description" content="@description" />
+</HeadContent>
+
+
+@code{
+    private string message = "Meddelande från Home";
+
+    private string description = "This is the main home-page";
+}
+

@@ -1,0 +1,35 @@
+﻿@page "/form-demo"
+@using DemoWebAssembly2.Client.Components
+@rendermode InteractiveWebAssembly
+<h3>FormDemo</h3>
+
+
+<h4>Birthday</h4>
+
+<input type="text" @bind="dob"/>
+<input type="button" @onclick="CalculateDay" value="Räkna ut vilken veckodag du är född på" />
+<h5>You were born on a @day</h5>
+
+
+
+<StarShipComponent></StarShipComponent>
+
+
+
+
+@code {
+    private string day = "";
+    private string dob = "";
+
+    private void CalculateDay()
+    {
+        if(dob != null)
+        {
+            var isValid = DateTime.TryParse(dob, out var date);
+            if(isValid)
+            {
+                day = date.DayOfWeek.ToString();
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+﻿<h3>@greet</h3>
+<h4>@Message</h4>
+<h6>@ChildContent</h6>
+<hr />
+
+@code {
+    private string greet = "Hello from component";
+
+    [Parameter]
+    public string Message { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

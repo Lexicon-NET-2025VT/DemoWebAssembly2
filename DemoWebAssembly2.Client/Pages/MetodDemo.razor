@@ -1,0 +1,16 @@
+﻿@page "/metod-demo"
+@rendermode InteractiveWebAssembly
+
+<h3>MetodDemo</h3>
+<h4>Hejsan Svejsan @header</h4>
+<button @onclick="MyMethod">Klicka här</button>
+
+@code {
+    private string header;
+
+    private void MyMethod()
+    {
+        header = "Micke";
+        Console.WriteLine("MyMethod kördes precis");
+    }
+}

@@ -1,0 +1,56 @@
+﻿<h3>StarShipComponent</h3>
+
+<form @onsubmit="Submit" method="post" @formname="starship-form">
+    <div>
+        <label>
+            Name:
+            <InputText @bind-Value="Ship.Name"></InputText>
+        </label>
+        <label>
+            Speed: 
+            <InputNumber @bind-Value="Ship.Speed"></InputNumber>
+        </label>
+        <label>
+            Real:
+            <InputCheckbox @bind-Value="Ship.Real"></InputCheckbox>
+        </label>
+    <button type="submit">Spara rymdskepp</button>
+    </div>
+</form>
+
+<table>
+@foreach(var ship in StarShips)
+    {
+        <tr>
+            <td>@ship.Name</td>
+            <td>@ship.Speed</td>
+            <td>@(ship.Real ? "På riktigt": "På låtsas")</td>
+        </tr>
+    }
+</table>
+
+@code {
+    [SupplyParameterFromForm]
+    public StarShip Ship { get; set; } = new();
+
+    List<StarShip> StarShips { get; set; } = new();
+
+
+    private void Submit()
+    {
+        StarShip newShip = new()
+        {
+            Name = Ship.Name,
+            Speed = Ship.Speed,
+            Real =Ship.Real
+        };
+        StarShips.Add(newShip);
+    }
+
+    public class StarShip
+    {
+        public string Name { get; set; }
+        public int Speed { get; set; }
+        public bool Real { get; set; }
+    }
+}
