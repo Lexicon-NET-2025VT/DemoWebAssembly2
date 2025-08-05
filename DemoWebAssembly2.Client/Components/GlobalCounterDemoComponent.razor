@@ -1,0 +1,28 @@
+﻿@using DemoWebAssembly2.Client.Services
+@inject IGlobalStateCounter GlobalCounter
+<h3>GlobalCounterDemoComponent</h3>
+
+<h4>Räknare: @counterValue</h4>
+<button @onclick="IncrementCount">Öka värdet med @Step</button>
+
+@code {
+    [Parameter]
+    public int Step { get; set; } = 1;
+
+    private int counterValue => GlobalCounter.Counter;
+
+    protected override void OnInitialized()
+    {
+        GlobalCounter.OnChange += StateHasChanged;
+    }
+
+    private void IncrementCount()
+    {
+        GlobalCounter.Increment(Step);
+    }
+
+    public void Dispose()
+    {
+        GlobalCounter.OnChange -= StateHasChanged;
+    }
+}

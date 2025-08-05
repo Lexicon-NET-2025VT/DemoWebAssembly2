@@ -1,4 +1,5 @@
 using DemoWebAssembly2.Client.Pages;
+using DemoWebAssembly2.Client.Services;
 using DemoWebAssembly2.Components;
 
 namespace DemoWebAssembly2
@@ -8,6 +9,8 @@ namespace DemoWebAssembly2
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddSingleton<IGlobalStateCounter, GlobalStateCounter>();
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
