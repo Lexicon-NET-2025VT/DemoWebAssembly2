@@ -1,0 +1,53 @@
+﻿@implements IDisposable
+<h3>LifeCycleDemoComponent</h3>
+
+@if(Items == null)
+{
+    <p>Laddar data...</p>
+}
+else
+{
+    <ul>
+        @foreach(var item in Items)
+        {
+            <li>@item</li>
+        }
+    </ul>
+}
+
+@code {
+    private List<string>? Items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Items = await FetchDataFromApi();
+        Console.WriteLine("OnInitialize done!");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if(firstRender)
+        {
+            Console.WriteLine("Första gången komponentent renderas");
+        }
+        else
+        {
+            Console.WriteLine("Komponenten renderas igen");
+        }
+    }
+
+    public void Dispose()
+    {
+        Console.WriteLine("Komponenten disposas");
+    }
+
+
+
+
+
+    private async Task<List<string>> FetchDataFromApi()
+    {
+        await Task.Delay(1000);
+        return new List<string> { "Anna", "Nisse", "Olle" };
+    }
+}
